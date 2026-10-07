@@ -1,0 +1,153 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<main class="login-page">
+    <style>
+        .login-page {
+            min-height: 68vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 72px 20px;
+            background: linear-gradient(135deg, #f4f7fb 0%, #fff 55%, #fdf0ed 100%);
+        }
+        
+        .login-card {
+            width: min(100%, 460px);
+            padding: 44px;
+            border: 1px solid #edf0f4;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 18px 55px rgba(24, 39, 75, .10);
+        }
+        
+        .login-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            color: #eb5e4c;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+        }
+        
+        .login-card h1 {
+            margin: 0 0 10px;
+            color: #17243a;
+            font-size: clamp(28px, 5vw, 36px);
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        
+        .login-intro {
+            margin: 0 0 30px;
+            color: #788397;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+        
+        .login-field {
+            margin-bottom: 20px;
+        }
+        
+        .login-field label {
+            display: block;
+            margin-bottom: 9px;
+            color: #27344a;
+            font-size: 14px;
+            font-weight: 700;
+        }
+        
+        .login-field input {
+            width: 100%;
+            height: 52px;
+            padding: 0 15px;
+            border: 1px solid #e1e6ee;
+            border-radius: 9px;
+            outline: none;
+            background: #fbfcfe;
+            color: #17243a;
+            font: inherit;
+            transition: border-color .2s, box-shadow .2s, background .2s;
+        }
+        
+        .login-field input:focus {
+            border-color: #eb5e4c;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(235, 94, 76, .12);
+        }
+        
+        .login-submit {
+            width: 100%;
+            min-height: 52px;
+            margin-top: 7px;
+            border: 0;
+            border-radius: 9px;
+            background: #eb5e4c;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background .2s, transform .2s;
+        }
+        
+        .login-submit:hover {
+            transform: translateY(-1px);
+            background: #d94c3b;
+        }
+        
+        .login-note {
+            margin: 22px 0 0;
+            color: #8993a3;
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: center;
+        }
+        
+        .login-error {
+            margin: 0 0 18px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            background: #fff0ee;
+            color: #b53c30;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 520px) {
+            .login-card {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+
+    <section class="login-card" aria-labelledby="login-title">
+        <span class="login-kicker"><i class="fas fa-newspaper" aria-hidden="true"></i> AZ News</span>
+        <h1 id="login-title">Xush kelibsiz!</h1>
+        <p class="login-intro">Hisobingizga kiring va eng so‘nggi yangiliklardan xabardor bo‘ling.</p>
+
+        {% if messages %} {% for message in messages %}
+        <div class="login-error" role="alert">{{ message }}</div>
+        {% endfor %} {% endif %}
+
+        {% if form.non_field_errors %}
+        <div class="login-error" role="alert">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="login-field">
+                <label for="id_email">Email</label>
+                <input id="id_email" name="email" type="email" autocomplete="username" placeholder="Emailingizni kiriting" value="{{ form.email.value|default:'' }}" required>
+                {% if form.email.errors %}<div class="login-error" role="alert">{{ form.email.errors }}</div>{% endif %}
+            </div>
+            <div class="login-field">
+                <label for="id_password">Parol</label>
+                <input id="id_password" name="password" type="password" autocomplete="current-password" placeholder="Parolingizni kiriting" required>
+                {% if form.password.errors %}<div class="login-error" role="alert">{{ form.password.errors }}</div>{% endif %}
+            </div>
+            <button class="login-submit" type="submit">Kirish <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+        </form>
+        <p class="login-note">Ma’lumotlaringiz xavfsizligi biz uchun muhim.</p>
+    </section>
+</main>
+{% endblock content %}

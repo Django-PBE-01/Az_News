@@ -1,0 +1,7 @@
+SECRET_KEY=django-insecure--fkf&uw!sh#mtncvq6_w-^u$k9sb8k-lw=l$qqvki+l1_fkx(o'
+DEBAG=True
+DB_NAME=az_news
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_HOST=localhost
+DB_PORT=5432
