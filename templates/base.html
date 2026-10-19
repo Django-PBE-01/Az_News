@@ -25,6 +25,8 @@
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/gijgo.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'css/site-overrides.css' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
@@ -39,8 +41,8 @@
                             <div class="row d-flex justify-content-between align-items-center">
                                 <div class="header-info-left">
                                     <ul>
-                                        <li><img src="{% static 'assets/img/icon/header_icon1.png' %}" alt="">34ºc, Sunny </li>
-                                        <li><img src="{% static 'assets/img/icon/header_icon1.png' %}" alt="">Tuesday, 18th June, 2019</li>
+                                        <li>AZ NEWS · O‘ZBEKISTON VA DUNYO</li>
+                                        <li>{% now "j F Y" %}</li>
                                     </ul>
                                 </div>
                                 <div class="header-info-right">
@@ -60,12 +62,12 @@
                             <!-- Logo -->
                             <div class="col-xl-3 col-lg-3 col-md-3">
                                 <div class="logo">
-                                    <a href="#"><img src="{% static 'assets/img/logo/logo.png' %}" alt=""></a>
+                                    <a href="{% url 'news:home' %}"><img src="{% static 'assets/img/logo/logo.png' %}" alt="AZ News bosh sahifa"></a>
                                 </div>
                             </div>
                             <div class="col-xl-9 col-lg-9 col-md-9">
                                 <div class="header-banner f-right ">
-                                    <img src="{% static 'assets/img/hero/header_card.jpg' %}" alt="">
+                                    <div class="header-edition"><span>TEZKOR XABARLAR</span><strong>O‘zbekiston <i>·</i> Dunyo <i>·</i> Tahlil</strong></div>
                                 </div>
                             </div>
                         </div>
@@ -77,28 +79,24 @@
                             <div class="col-xl-10 col-lg-10 col-md-12 header-flex">
                                 <!-- sticky -->
                                 <div class="sticky-logo">
-                                    <a href="#"><img src="{% static 'assets/img/logo/logo.png' %}" alt=""></a>
+                                    <a href="{% url 'news:home' %}"><img src="{% static 'assets/img/logo/logo.png' %}" alt="AZ News bosh sahifa"></a>
                                 </div>
                                 <!-- Main-menu -->
                                 <div class="main-menu d-none d-md-block">
                                     <nav>
                                         <ul id="navigation">
-                                            <li><a href="#">Home</a></li>
-                                            <li><a href="#">Category</a></li>
-                                            <li><a href="#">About</a></li>
-                                            <li><a href="#">Latest News</a></li>
-                                            <li><a href="#">Contact</a></li>
-                                            <li><a href="#">Pages</a>
+                                            <li><a href="{% url 'news:home' %}">Bosh sahifa</a></li>
+                                            <li><a href="{% url 'news:latest' %}">Yangiliklar</a></li>
+                                            <li><a href="{% url 'blog:list' %}">Blog</a></li>
+                                            <li><a href="{% url 'news:about' %}">Biz haqimizda</a></li>
+                                            <li><a href="{% url 'news:contact' %}">Bog‘lanish</a></li>
+                                            <li><a href="{% url 'news:latest' %}">Kategoriyalar</a>
                                                 <ul class="submenu">
-                                                    <li><a href="#">Element</a></li>
-                                                    <li><a href="#">Blog</a></li>
-                                                    <li><a href="#">Blog Details</a></li>
-                                                    <li><a href="#">Categori Details</a></li>
+                                                    {% for category in categories %}<li><a href="{% url 'news:category' category.pk %}">{{ category.name }}</a></li>{% endfor %}
                                                 </ul>
                                             </li>
                                             {% if user.is_authenticated %}
-                                            <li><span class="nav-link">Salom, {{ user.get_full_name|default:user.email }}</span></li>
-                                            <li><a href="{% url 'accounts:logout' %}">Chiqish</a></li>
+                                            <li class="account-nav"><a href="{% url 'accounts:profile' %}">{{ user.get_full_name|default:'Profil' }}</a><ul class="submenu"><li><a href="{% url 'accounts:profile' %}">Profilim</a></li><li><a href="{% url 'accounts:logout' %}">Chiqish</a></li></ul></li>
                                             {% else %}
                                             <li><a href="{% url 'accounts:login' %}">Kirish</a></li>
                                             <li><a href="{% url 'accounts:register' %}">Ro‘yxatdan o‘tish</a></li>
@@ -111,8 +109,8 @@
                                 <div class="header-right-btn f-right d-none d-lg-block">
                                     <i class="fas fa-search special-tag"></i>
                                     <div class="search-box">
-                                        <form action="#">
-                                            <input type="text" placeholder="Search">
+                                        <form action="{% url 'news:search' %}" method="get" role="search">
+                                            <input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Yangilik qidirish" aria-label="Yangilik qidirish" required>
                                         </form>
                                     </div>
                                 </div>

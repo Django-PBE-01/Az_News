@@ -112,3 +112,7 @@ class LogoutView(TemplateView, LoginRequiredMixin):
             "Muvaffaqiyatli logout qilindi!"
             )
         return redirect('news:home')
+
+
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'accounts/profile.html'
